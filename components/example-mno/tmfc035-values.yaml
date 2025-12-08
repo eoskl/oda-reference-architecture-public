@@ -1,0 +1,230 @@
+# Example MNO-specific Configuration for TMFC035 Permissions Management
+# Deployment: Example MNO ODA Implementation
+# Environment: Production
+# Last Updated: 2024-12-08
+
+# Component Configuration
+component:
+  name: example-mno-permissions-management
+  namespace: example-mno-oda-party
+  replicas: 3
+
+# Release Configuration
+release:
+  name: example-mno-prod
+  environment: production
+
+# Security Configuration
+security:
+  controllerRole: example-mno-oda-controller
+
+  # Secrets Management via Sidecar
+  secretsManagement:
+    enabled: true
+    type: sideCar
+    podSelector:
+      namespace: example-mno-oda-party
+      name: example-mno-permissions-mgmt
+      serviceaccount: example-mno-permissions-sa
+
+  # OAuth2/OIDC Configuration for Example MNO IDM
+  oauth:
+    enabled: true
+    provider: keycloak
+    issuerUrl: https://idm.example-mno.com.my/auth/realms/oda
+    clientId: example-mno-tmfc035-permissions
+    clientSecret: ${UMOBILE_TMFC035_CLIENT_SECRET}
+
+  # Role Mappings for Example MNO
+  roleMappings:
+    - odaRole: PartyManager
+      example-mnoRole: party_admin
+    - odaRole: PermissionViewer
+      example-mnoRole: party_readonly
+    - odaRole: RoleManager
+      example-mnoRole: role_manager
+
+# API Configuration
+apis:
+  # TMF672 - User Role Permission Management
+  tmf672:
+    enabled: true
+    port: 8080
+    path: /example-mno-prod-permissions-management/tmf-api/userRolePermission/v4
+    developerUI: /example-mno-prod-permissions-management/tmf-api/userRolePermission/v4/docs
+    rateLimit:
+      requestsPerSecond: 100
+      burst: 200
+
+  # TMF669 - Party Role Management
+  tmf669:
+    enabled: true
+    port: 8080
+    path: /example-mno-prod-permissions-management/tmf-api/partyRoleManagement/v4
+    developerUI: /example-mno-prod-permissions-management/tmf-api/partyRoleManagement/v4/docs
+    rateLimit:
+      requestsPerSecond: 100
+      burst: 200
+
+# Dependent API Endpoints (Example MNO-specific)
+dependentAPIs:
+  # TMF632 - Party Management (existing Example MNO component)
+  tmf632:
+    baseUrl: https://api.example-mno.com.my/oda/party-management/v4
+    timeout: 30s
+    retry:
+      maxAttempts: 3
+      backoff: exponential
+
+  # TMF701 - Process Flow Management (optional)
+  tmf701:
+    enabled: false
+
+# Event Configuration
+events:
+  # Kafka Configuration for Example MNO Event Bus
+  kafka:
+    enabled: true
+    brokers:
+      - kafka-1.example-mno.internal:9092
+      - kafka-2.example-mno.internal:9092
+      - kafka-3.example-mno.internal:9092
+    security:
+      protocol: SASL_SSL
+      mechanism: SCRAM-SHA-512
+      username: example-mno-oda-events
+      password: ${UMOBILE_KAFKA_PASSWORD}
+
+  # Published Events Topics
+  publishedEvents:
+    userRole:
+      topic: example-mno.oda.party.userRole
+      partitions: 6
+      replicationFactor: 3
+    partyRole:
+      topic: example-mno.oda.party.partyRole
+      partitions: 6
+      replicationFactor: 3
+
+  # Subscribed Events Topics
+  subscribedEvents:
+    partyManagement:
+      topic: example-mno.oda.party.management
+      consumerGroup: example-mno-permissions-consumer
+    processFlow:
+      topic: example-mno.oda.process.flow
+      consumerGroup: example-mno-permissions-consumer
+
+# Monitoring & Observability
+monitoring:
+  # Prometheus Metrics
+  prometheus:
+    enabled: true
+    port: 4000
+    path: /example-mno-prod-permissions-management/metrics
+    scrapeInterval: 30s
+
+  # Logging
+  logging:
+    level: INFO
+    format: json
+    output:
+      - stdout
+      - elasticsearch
+    elasticsearch:
+      hosts:
+        - https://logs.example-mno.internal:9200
+      index: example-mno-oda-permissions
+
+  # Distributed Tracing
+  tracing:
+    enabled: true
+    provider: jaeger
+    endpoint: https://tracing.example-mno.internal:14268/api/traces
+    samplingRate: 0.1
+
+# Resource Management
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+
+# High Availability
+highAvailability:
+  enabled: true
+  podDisruptionBudget:
+    minAvailable: 2
+  affinity:
+    podAntiAffinity: preferred
+    topologyKey: kubernetes.io/hostname
+
+# Networking
+networking:
+  # Service Mesh Integration (Istio)
+  serviceMesh:
+    enabled: true
+    provider: istio
+    mtls: STRICT
+
+  # API Gateway Integration
+  apiGateway:
+    enabled: true
+    provider: kong
+    baseUrl: https://api.example-mno.com.my
+
+  # Ingress
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/rate-limit: "100"
+    hosts:
+      - host: oda-permissions.example-mno.com.my
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: example-mno-permissions-tls
+        hosts:
+          - oda-permissions.example-mno.com.my
+
+# Database Configuration (if required for local state)
+database:
+  enabled: false
+  # Use existing Example MNO PostgreSQL cluster
+  # Configuration managed via external ConfigMap
+
+# Backup & Disaster Recovery
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM MYT
+  retention: 30d
+  destination: s3://example-mno-oda-backups/tmfc035
+
+# Example MNO-Specific Extensions
+example-mno:
+  # Integration with Example MNO Customer Portal
+  customerPortal:
+    enabled: true
+    ssoIntegration: true
+
+  # Compliance & Audit
+  compliance:
+    dataResidency: MY  # Example Country data residency
+    auditLogging: true
+    gdprCompliant: true
+
+  # Business Metrics
+  metrics:
+    businessEvents:
+      - roleCreated
+      - roleModified
+      - permissionGranted
+      - permissionRevoked
+    destinations:
+      - example-mno-analytics-platform
+      - example-mno-bi-warehouse

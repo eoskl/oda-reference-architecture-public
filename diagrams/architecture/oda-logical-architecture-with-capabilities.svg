@@ -1,0 +1,139 @@
+<svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define styles -->
+  <defs>
+    <style>
+      .domain-box { fill: #ffffff; stroke: #2c3e50; stroke-width: 2; }
+      .sor-domain { fill: #3498db; }
+      .soe-domain { fill: #2ecc71; }
+      .soi-domain { fill: #e74c3c; }
+      .layer-label { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #ffffff; }
+      .domain-label { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #2c3e50; }
+      .capability-code { font-family: 'Courier New', monospace; font-size: 11px; fill: #2980b9; font-weight: bold; }
+      .capability-name { font-family: Arial, sans-serif; font-size: 11px; fill: #34495e; }
+      .component-text { font-family: Arial, sans-serif; font-size: 12px; fill: #34495e; }
+      .title-text { font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #2c3e50; }
+      .subtitle-text { font-family: Arial, sans-serif; font-size: 14px; fill: #7f8c8d; }
+      .layer-bg { opacity: 0.15; }
+    </style>
+    
+    <!-- Arrow marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#95a5a6" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="700" y="40" text-anchor="middle" class="title-text">ODA Logical Architecture with TMF Capabilities</text>
+  <text x="700" y="65" text-anchor="middle" class="subtitle-text">Component-Based Digital Architecture Framework</text>
+  
+  <!-- System of Engagement (SoE) Layer -->
+  <rect x="50" y="120" width="1300" height="150" class="soe-domain layer-bg" rx="5"/>
+  <rect x="50" y="120" width="180" height="40" class="soe-domain" rx="5"/>
+  <text x="140" y="145" text-anchor="middle" class="layer-label">System of Engagement</text>
+  
+  <!-- Engagement Domain -->
+  <rect x="300" y="150" width="850" height="100" class="domain-box" rx="5"/>
+  <text x="725" y="175" text-anchor="middle" class="domain-label">Engagement Domain</text>
+  <text x="500" y="200" text-anchor="middle" class="component-text">• Omnichannel Experience</text>
+  <text x="500" y="218" text-anchor="middle" class="component-text">• Customer Journey Orchestration</text>
+  <text x="500" y="236" text-anchor="middle" class="component-text">• Self-Service Portal</text>
+  <text x="950" y="200" text-anchor="middle" class="component-text">• Digital Touchpoints (Web, Mobile, API)</text>
+  <text x="950" y="218" text-anchor="middle" class="component-text">• Campaign & Offer Management</text>
+  <text x="950" y="236" text-anchor="middle" class="component-text">• Notification & Communication Services</text>
+  
+  <!-- System of Records (SoR) Layer -->
+  <rect x="50" y="310" width="1300" height="290" class="sor-domain layer-bg" rx="5"/>
+  <rect x="50" y="310" width="150" height="40" class="sor-domain" rx="5"/>
+  <text x="125" y="335" text-anchor="middle" class="layer-label">System of Records</text>
+  
+  <!-- Party Domain -->
+  <rect x="80" y="370" width="370" height="210" class="domain-box" rx="5"/>
+  <text x="265" y="395" text-anchor="middle" class="domain-label">Party Domain</text>
+  
+  <text x="95" y="425" class="capability-code">TMFC028</text>
+  <text x="165" y="425" class="capability-name">Party Management</text>
+  
+  <text x="95" y="455" class="capability-code">TMFC035</text>
+  <text x="165" y="455" class="capability-name">Party Roles & Permission Management</text>
+  
+  <text x="95" y="485" class="capability-code">TMFC020</text>
+  <text x="165" y="485" class="capability-name">Digital Identity Management</text>
+  
+  <text x="95" y="515" class="capability-code">TMFC039</text>
+  <text x="165" y="515" class="capability-name">Agreement Management</text>
+  
+  <line x1="95" y1="535" x2="435" y2="535" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="265" y="555" text-anchor="middle" class="component-text" font-style="italic">Customer, Partner & Supplier Data</text>
+  <text x="265" y="570" text-anchor="middle" class="component-text" font-style="italic">Identity, Access Control & Agreements</text>
+  
+  <!-- Commerce Domain -->
+  <rect x="490" y="370" width="370" height="210" class="domain-box" rx="5"/>
+  <text x="675" y="395" text-anchor="middle" class="domain-label">Commerce Domain</text>
+  
+  <text x="505" y="425" class="capability-code">TMFC001</text>
+  <text x="575" y="425" class="capability-name">Product Catalog Management</text>
+  
+  <text x="505" y="455" class="capability-code">TMFC002</text>
+  <text x="575" y="455" class="capability-name">Product Order Capture & Management</text>
+  
+  <text x="505" y="485" class="capability-code">TMFC005</text>
+  <text x="575" y="485" class="capability-name">Product Inventory Management</text>
+  
+  <line x1="505" y1="510" x2="845" y2="510" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="675" y="530" text-anchor="middle" class="component-text" font-style="italic">Product Offerings & Pricing</text>
+  <text x="675" y="545" text-anchor="middle" class="component-text" font-style="italic">Order Capture, Orchestration & Fulfillment</text>
+  <text x="675" y="560" text-anchor="middle" class="component-text" font-style="italic">Billing & Revenue Management</text>
+  <text x="675" y="575" text-anchor="middle" class="component-text" font-style="italic">Product Inventory & Subscriptions</text>
+  
+  <!-- Production Domain -->
+  <rect x="900" y="370" width="370" height="210" class="domain-box" rx="5"/>
+  <text x="1085" y="395" text-anchor="middle" class="domain-label">Production Domain</text>
+  
+  <text x="915" y="425" class="capability-code">TMFC008</text>
+  <text x="985" y="425" class="capability-name">Service Inventory Management</text>
+  
+  <text x="915" y="455" class="capability-code">TMFC012</text>
+  <text x="985" y="455" class="capability-name">Resource Inventory Management</text>
+  
+  <line x1="915" y1="480" x2="1255" y2="480" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="1085" y="500" text-anchor="middle" class="component-text" font-style="italic">Service Configuration & Activation</text>
+  <text x="1085" y="515" text-anchor="middle" class="component-text" font-style="italic">Service Quality & Performance</text>
+  <text x="1085" y="530" text-anchor="middle" class="component-text" font-style="italic">Network & Physical Resources</text>
+  <text x="1085" y="545" text-anchor="middle" class="component-text" font-style="italic">Logical Resources & Applications</text>
+  <text x="1085" y="560" text-anchor="middle" class="component-text" font-style="italic">Infrastructure & Capacity Management</text>
+  <text x="1085" y="575" text-anchor="middle" class="component-text" font-style="italic">Resource Topology & Relationships</text>
+  
+  <!-- System of Innovation (SoI) Layer -->
+  <rect x="50" y="640" width="1300" height="180" class="soi-domain layer-bg" rx="5"/>
+  <rect x="50" y="640" width="170" height="40" class="soi-domain" rx="5"/>
+  <text x="135" y="665" text-anchor="middle" class="layer-label">System of Innovation</text>
+  
+  <!-- Intelligence Domain -->
+  <rect x="300" y="700" width="850" height="100" class="domain-box" rx="5"/>
+  <text x="725" y="725" text-anchor="middle" class="domain-label">Intelligence Domain</text>
+  <text x="500" y="750" text-anchor="middle" class="component-text">• Business Intelligence & Analytics</text>
+  <text x="500" y="768" text-anchor="middle" class="component-text">• AI/ML Services & Models</text>
+  <text x="500" y="786" text-anchor="middle" class="component-text">• Data Lake & Data Warehouse</text>
+  <text x="950" y="750" text-anchor="middle" class="component-text">• Predictive Analytics & Intelligence</text>
+  <text x="950" y="768" text-anchor="middle" class="component-text">• Real-time Insights & Monitoring</text>
+  <text x="950" y="786" text-anchor="middle" class="component-text">• Intelligent Automation & Orchestration</text>
+  
+  <!-- Connection arrows showing data flow -->
+  <!-- From Engagement to SoR domains -->
+  <path d="M 725 250 L 725 290 L 265 290 L 265 370" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <path d="M 725 250 L 725 290 L 675 290 L 675 370" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <path d="M 725 250 L 725 290 L 1085 290 L 1085 370" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  
+  <!-- From SoR domains to Intelligence -->
+  <path d="M 265 580 L 265 620 L 725 620 L 725 700" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <path d="M 675 580 L 675 620 L 725 620 L 725 700" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <path d="M 1085 580 L 1085 620 L 725 620 L 725 700" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  
+  <!-- Legend -->
+  <text x="50" y="865" class="component-text" font-weight="bold">Integration:</text>
+  <path d="M 130 860 L 170 860" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <text x="180" y="865" class="component-text">Cross-domain data flow via TMF Open APIs (REST/Event-driven)</text>
+  
+  <text x="700" y="865" class="component-text" font-weight="bold">TMF Standards:</text>
+  <text x="800" y="865" class="component-text">All capabilities implement TMF Open API specifications</text>
+</svg>

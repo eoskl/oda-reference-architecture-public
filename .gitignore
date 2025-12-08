@@ -1,0 +1,39 @@
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build and Output
+*.log
+*.tmp
+*.temp
+dist/
+build/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Environment and Secrets
+.env
+.env.local
+*.key
+*.pem
+secrets/
+credentials/
+
+# Backup Files
+*.bak
+*.backup

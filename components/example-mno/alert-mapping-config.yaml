@@ -1,0 +1,563 @@
+# Alert Mapping Configuration for Example MNO ODA
+# Maps monitoring alerts → NIST CSF 2.0 → Example Countryn Regulatory Requirements
+
+---
+# Prometheus Alert Rules with NIST CSF and Regulatory Mapping
+prometheus_alerts:
+  groups:
+    - name: authentication_security
+      interval: 30s
+      rules:
+        - alert: AuthenticationBypassDetected
+          expr: |
+            rate(http_requests_total{
+              endpoint=~"/tmf-api/(userRolePermission|partyRoleManagement).*",
+              status_code=~"2..",
+              auth_header_present="false"
+            }[5m]) > 0
+          for: 2m
+          labels:
+            severity: critical
+            component: tmfc035-permissions
+            # NIST CSF 2.0 Mapping
+            nist_function: DETECT
+            nist_category: DE.CM-09
+            nist_subcategory: "Computing hardware and software are monitored"
+            violated_controls: "PR.AA-03,PR.AA-04"
+            # Example Countryn Regulatory Mapping
+            csa_category: "Unauthorized Access"
+            csa_reportable: "true"
+            csa_deadline_hours: "24"
+            pdpa_breach_type: "potential"
+            pdpa_assessment_required: "true"
+            # Response Actions
+            auto_remediation: "rollback_deployment"
+            escalation_level: "ciso"
+          annotations:
+            summary: "Unauthenticated API access detected on {{ $labels.endpoint }}"
+            description: |
+              {{ $value }} requests/sec without authentication detected.
+
+              NIST CSF Violation:
+              - PR.AA-03: Users must be authenticated
+              - PR.AA-04: Identity assertions must be protected
+
+              Example Countryn Regulatory Impact:
+              - Example Cybersecurity Act: Example Regulatory Authority notification required within 24 hours
+              - Example DPA 2024: Assess if personal data was accessed
+
+            runbook: "https://wiki.example-mno.internal/runbooks/auth-bypass"
+            playbook: "incident-response-authentication"
+
+        - alert: FailedAuthenticationSpike
+          expr: |
+            rate(http_requests_total{
+              endpoint=~"/tmf-api/.*",
+              status_code="401"
+            }[5m]) > 10
+          for: 5m
+          labels:
+            severity: warning
+            component: api-gateway
+            nist_function: DETECT
+            nist_category: DE.CM-07
+            nist_subcategory: "Monitoring for unauthorized access"
+            csa_category: "Attempted Unauthorized Access"
+            csa_reportable: "false"  # Not reportable unless successful
+            pdpa_breach_type: "none"
+            auto_remediation: "rate_limit"
+            escalation_level: "soc"
+          annotations:
+            summary: "High rate of failed authentication attempts"
+            description: |
+              {{ $value }} failed authentication attempts/sec detected.
+              May indicate credential stuffing or brute force attack.
+
+              NIST CSF Detection: DE.CM-07
+              Example Countryn Impact: Monitor for escalation to successful breach
+            runbook: "https://wiki.example-mno.internal/runbooks/auth-spike"
+
+        - alert: RolePrivilegeEscalation
+          expr: |
+            increase(role_privilege_changes_total{
+              change_type="elevation",
+              approved="false"
+            }[10m]) > 0
+          for: 1m
+          labels:
+            severity: critical
+            component: tmfc035-permissions
+            nist_function: DETECT
+            nist_category: DE.CM-09
+            nist_subcategory: "Personnel activity is monitored"
+            violated_controls: "PR.AA-05"
+            csa_category: "Unauthorized Access"
+            csa_reportable: "true"
+            csa_deadline_hours: "24"
+            pdpa_breach_type: "confirmed"
+            pdpa_deadline_hours: "72"
+            auto_remediation: "revoke_elevation"
+            escalation_level: "ciso"
+          annotations:
+            summary: "Unauthorized privilege escalation detected"
+            description: |
+              User {{ $labels.user_id }} attempted unauthorized privilege escalation.
+
+              NIST CSF Violation: PR.AA-05 (Access permissions management)
+
+              Example Cybersecurity Act: Reportable as unauthorized access
+              Example DPA 2024: Data breach - user roles are personal data
+            runbook: "https://wiki.example-mno.internal/runbooks/privilege-escalation"
+
+    - name: data_protection
+      interval: 30s
+      rules:
+        - alert: PIIInLogsDetected
+          expr: |
+            increase(dlp_violations_total{
+              violation_type="pii_in_logs"
+            }[5m]) > 0
+          for: 1m
+          labels:
+            severity: high
+            component: logging-system
+            nist_function: DETECT
+            nist_category: DE.CM-09
+            violated_controls: "PR.DS-05"
+            pdpa_principle: "Security Principle (P4)"
+            pdpa_breach_type: "confirmed"
+            pdpa_deadline_hours: "72"
+            pdpa_individual_notification: "true"
+            csa_category: "Data Leakage"
+            csa_reportable: "true"
+            auto_remediation: "purge_logs"
+            escalation_level: "dpo"
+          annotations:
+            summary: "Personal Identifiable Information detected in logs"
+            description: |
+              PII detected in {{ $labels.index }} index.
+              Types: {{ $labels.pii_types }}
+              Count: {{ $value }}
+
+              NIST CSF Violation: PR.DS-05 (Data lifecycle management)
+
+              Example DPA 2024:
+              - Security Principle violated (data not protected)
+              - Commissioner notification required (72 hours)
+              - Individual notification required
+
+              Example Cybersecurity Act:
+              - Reportable as data leakage incident
+            runbook: "https://wiki.example-mno.internal/runbooks/pii-in-logs"
+
+        - alert: UnencryptedDataTransmission
+          expr: |
+            increase(http_requests_total{
+              protocol="http",
+              endpoint=~"/tmf-api/.*"
+            }[5m]) > 0
+          for: 2m
+          labels:
+            severity: critical
+            component: api-gateway
+            nist_function: DETECT
+            nist_category: DE.CM-09
+            violated_controls: "PR.DS-02"
+            pdpa_principle: "Security Principle (P4)"
+            pdpa_breach_type: "potential"
+            csa_category: "Configuration Weakness"
+            csa_reportable: "false"
+            auto_remediation: "block_http"
+            escalation_level: "soc"
+          annotations:
+            summary: "Unencrypted data transmission detected"
+            description: |
+              API requests transmitted over HTTP (unencrypted).
+
+              NIST CSF Violation: PR.DS-02 (Data in transit protection)
+              Example DPA: Security Principle - data must be protected in transit
+            runbook: "https://wiki.example-mno.internal/runbooks/unencrypted-transmission"
+
+        - alert: DataRetentionPolicyViolation
+          expr: |
+            data_retention_age_days{
+              data_category="customer_data"
+            } > 2555  # 7 years
+          for: 1h
+          labels:
+            severity: medium
+            component: data-lifecycle-manager
+            nist_function: PROTECT
+            nist_category: PR.DS-05
+            violated_controls: "PR.DS-05"
+            pdpa_principle: "Retention Principle (P5)"
+            pdpa_breach_type: "none"
+            pdpa_violation: "true"
+            csa_reportable: "false"
+            auto_remediation: "schedule_deletion"
+            escalation_level: "dpo"
+          annotations:
+            summary: "Data retained beyond policy limit"
+            description: |
+              Data category {{ $labels.data_category }} retained for {{ $value }} days.
+              Policy limit: 2555 days (7 years).
+
+              NIST CSF: PR.DS-05 (Data lifecycle management)
+              Example DPA: Retention Principle - data retained longer than necessary
+            runbook: "https://wiki.example-mno.internal/runbooks/retention-violation"
+
+    - name: incident_response
+      interval: 60s
+      rules:
+        - alert: IncidentResponseDeadlineMissed
+          expr: |
+            (time() - incident_detection_timestamp{status="open"})
+            > (incident_deadline_seconds{regulation="CSA2024"})
+          for: 5m
+          labels:
+            severity: critical
+            component: incident-management
+            nist_function: RESPOND
+            nist_category: RS.MA-01
+            csa_violation: "true"
+            csa_penalty_risk: "high"
+            escalation_level: "ciso"
+          annotations:
+            summary: "Example Cybersecurity Act reporting deadline missed for {{ $labels.incident_id }}"
+            description: |
+              Incident {{ $labels.incident_id }} not reported to Example Regulatory Authority within 24 hours.
+
+              Regulation: Cyber Security Act 2024 (CSA-02)
+              Requirement: Example Regulatory Authority notification within 24 hours
+              Status: VIOLATED
+              Risk: Regulatory penalties
+            runbook: "https://wiki.example-mno.internal/runbooks/deadline-missed"
+
+---
+# Elasticsearch SIEM Alert Rules
+elasticsearch_alerts:
+  - name: authentication-bypass-correlation
+    description: "Detects successful API calls without JWT validation"
+    index_pattern: "example-mno-oda-permissions-*"
+    query:
+      bool:
+        must:
+          - match:
+              api.endpoint: "/tmf-api/userRolePermission/v4/*"
+          - range:
+              http.status_code:
+                gte: 200
+                lt: 300
+        must_not:
+          - exists:
+              field: jwt.token_id
+    timeframe:
+      window: "5m"
+      threshold: 1
+    labels:
+      severity: critical
+      nist_function: DETECT
+      nist_category: DE.AE-02
+      nist_subcategory: "Adverse events are analyzed"
+      violated_controls: "PR.AA-03,PR.AA-04"
+      csa_category: "Unauthorized Access"
+      csa_reportable: true
+      csa_deadline: "24h"
+      pdpa_assessment_required: true
+    actions:
+      - type: create_incident
+        severity: high
+        assignee: security-team
+      - type: pagerduty
+        integration_key: "{{ env.PAGERDUTY_SECURITY_KEY }}"
+        urgency: high
+      - type: webhook
+        url: "https://api.example-mno.internal/security/incidents"
+        method: POST
+
+  - name: data-exfiltration-pattern
+    description: "Detects unusual data export volumes"
+    index_pattern: "example-mno-oda-permissions-*"
+    query:
+      bool:
+        must:
+          - match:
+              api.endpoint: "/tmf-api/*/data-export"
+          - range:
+              response.size_bytes:
+                gte: 10485760  # 10MB
+    aggregation:
+      field: user.id
+      threshold: 5  # More than 5 large exports in window
+    timeframe:
+      window: "10m"
+    labels:
+      severity: high
+      nist_function: DETECT
+      nist_category: DE.AE-02
+      violated_controls: "PR.DS-05"
+      csa_category: "Data Leakage"
+      csa_reportable: true
+      pdpa_breach_type: "potential"
+      pdpa_assessment_required: true
+    actions:
+      - type: create_incident
+        severity: high
+      - type: slack
+        channel: "#security-alerts"
+        message: "Potential data exfiltration by user {{ user.id }}"
+
+  - name: pdpa-dsar-sla-breach
+    description: "Detects DSAR requests exceeding 21-day SLA"
+    index_pattern: "example-mno-compliance-*"
+    query:
+      bool:
+        must:
+          - match:
+              request_type: "data_subject_access_request"
+          - match:
+              status: "open"
+          - script:
+              script:
+                source: "doc['created_at'].value.millis + 1814400000 < new Date().getTime()"
+                # 21 days in milliseconds
+    labels:
+      severity: high
+      nist_category: PR.DS-05
+      pdpa_principle: "Access Principle (P7)"
+      pdpa_violation: true
+      pdpa_penalty_risk: high
+      escalation_level: "dpo"
+    actions:
+      - type: jira
+        project: COMPLIANCE
+        issuetype: Incident
+        priority: Highest
+        labels: ["Example DPA", "DSAR", "SLA-BREACH"]
+
+---
+# Alert Routing and Escalation
+alert_routing:
+  # Critical alerts requiring immediate CISO notification
+  ciso_escalation:
+    conditions:
+      - escalation_level: "ciso"
+      - severity: "critical"
+      - csa_reportable: "true"
+      - pdpa_breach_type: "confirmed"
+    actions:
+      - type: pagerduty
+        integration_key: "{{ env.PAGERDUTY_CISO_KEY }}"
+        urgency: high
+      - type: email
+        to: ["ciso@example-mno.com.my", "coo@example-mno.com.my"]
+        subject: "URGENT: Security Incident Requiring CISO Attention"
+      - type: sms
+        to: "{{ env.CISO_MOBILE }}"
+
+  # DPO notification for Example DPA-related incidents
+  dpo_escalation:
+    conditions:
+      - escalation_level: "dpo"
+      - pdpa_breach_type: ["confirmed", "potential"]
+      - pdpa_assessment_required: "true"
+    actions:
+      - type: email
+        to: ["dpo@example-mno.com.my"]
+        subject: "Example DPA Incident - Assessment Required"
+      - type: slack
+        channel: "#data-protection"
+        mention: "@dpo-team"
+      - type: jira
+        project: COMPLIANCE
+        issuetype: "Example DPA Incident"
+
+  # SOC team for monitoring and initial triage
+  soc_escalation:
+    conditions:
+      - escalation_level: "soc"
+      - severity: ["high", "medium"]
+    actions:
+      - type: slack
+        channel: "#security-operations"
+      - type: servicenow
+        assignment_group: "Security Operations"
+        impact: "{{ alert.severity }}"
+
+  # Regulatory reporting automation
+  regulatory_automation:
+    # Cyber Security Act 2024 - Example Regulatory Authority Reporting
+    csa_reporting:
+      conditions:
+        - csa_reportable: "true"
+      actions:
+        - type: create_nacsa_report
+          incident_category: "{{ alert.csa_category }}"
+          deadline: "{{ alert.csa_deadline }}"
+          auto_submit: false  # Requires human review
+        - type: jira
+          project: COMPLIANCE
+          issuetype: "Regulatory Report"
+          labels: ["CSA2024", "Example Regulatory Authority"]
+          duedate: "+{{ alert.csa_deadline_hours }}h"
+
+    # Example DPA 2024 - Commissioner Notification
+    pdpa_reporting:
+      conditions:
+        - pdpa_breach_type: ["confirmed"]
+      actions:
+        - type: create_pdpa_notification
+          breach_type: "{{ alert.pdpa_breach_type }}"
+          deadline_hours: 72
+          auto_submit: false
+        - type: jira
+          project: COMPLIANCE
+          issuetype: "Data Breach Notification"
+          labels: ["Example DPA2024", "Commissioner"]
+          duedate: "+72h"
+        - type: start_breach_assessment
+          workflow: "pdpa-breach-assessment"
+
+---
+# Auto-Remediation Actions
+auto_remediation:
+  rollback_deployment:
+    description: "Rollback to previous deployment version"
+    conditions:
+      - auto_remediation: "rollback_deployment"
+      - severity: "critical"
+    actions:
+      - type: kubernetes
+        command: "kubectl rollout undo deployment/{{ alert.component }}"
+        namespace: "example-mno-oda-party"
+      - type: verify
+        command: "kubectl rollout status deployment/{{ alert.component }}"
+        timeout: "5m"
+      - type: notify
+        channel: "#deployments"
+        message: "Auto-rollback triggered for {{ alert.component }}"
+
+  revoke_elevation:
+    description: "Revoke unauthorized privilege elevation"
+    conditions:
+      - auto_remediation: "revoke_elevation"
+    actions:
+      - type: api_call
+        url: "https://api.example-mno.internal/iam/revoke-elevation"
+        method: POST
+        body:
+          user_id: "{{ alert.user_id }}"
+          reason: "Unauthorized privilege escalation detected"
+      - type: audit_log
+        action: "privilege_revoked"
+        reason: "auto_remediation"
+
+  purge_logs:
+    description: "Purge logs containing PII"
+    conditions:
+      - auto_remediation: "purge_logs"
+      - pdpa_breach_type: "confirmed"
+    actions:
+      - type: elasticsearch_delete
+        index: "{{ alert.index }}"
+        query:
+          match:
+            contains_pii: true
+      - type: audit_log
+        action: "pii_logs_purged"
+        justification: "Example DPA compliance"
+
+  block_http:
+    description: "Block unencrypted HTTP traffic"
+    conditions:
+      - auto_remediation: "block_http"
+    actions:
+      - type: api_gateway_config
+        rule: "block_http_traffic"
+        enabled: true
+      - type: notify
+        channel: "#security-ops"
+        message: "HTTP traffic blocked on {{ alert.component }}"
+
+---
+# Compliance Evidence Collection
+evidence_collection:
+  incident_evidence:
+    triggers:
+      - csa_reportable: "true"
+      - pdpa_breach_type: ["confirmed", "potential"]
+    collect:
+      - type: logs
+        source: elasticsearch
+        index: "{{ alert.index }}"
+        time_range: "{{ alert.detection_time }} +/- 30m"
+        destination: "s3://example-mno-compliance/incidents/{{ incident_id }}/logs/"
+
+      - type: metrics
+        source: prometheus
+        metrics:
+          - http_requests_total
+          - authentication_failures_total
+          - api_latency_seconds
+        time_range: "{{ alert.detection_time }} +/- 30m"
+        destination: "s3://example-mno-compliance/incidents/{{ incident_id }}/metrics/"
+
+      - type: database_snapshot
+        tables:
+          - user_roles
+          - role_permissions
+          - audit_trail
+        filter: "timestamp BETWEEN '{{ alert.start_time }}' AND '{{ alert.end_time }}'"
+        destination: "s3://example-mno-compliance/incidents/{{ incident_id }}/db-snapshot/"
+
+      - type: kubernetes_state
+        resources:
+          - deployments
+          - configmaps
+          - secrets
+        namespace: "example-mno-oda-party"
+        destination: "s3://example-mno-compliance/incidents/{{ incident_id }}/k8s-state/"
+
+    retention:
+      regulatory: "7 years"  # Example Countryn regulatory requirement
+      storage_class: "GLACIER_IR"
+
+---
+# Alert Metadata and Documentation
+metadata:
+  version: "1.0.0"
+  last_updated: "2024-12-08"
+  maintainer: "Example MNO Security Team"
+  documentation: "https://wiki.example-mno.internal/security/alert-mapping"
+
+  regulatory_framework:
+    - name: "Cyber Security Act 2024"
+      authority: "Example Regulatory Authority"
+      key_requirements:
+        - "24-hour incident reporting (CSA-02)"
+        - "Risk management framework (CSA-01)"
+        - "Annual audit (CSA-04)"
+
+    - name: "Personal Data Protection Act 2024"
+      authority: "Example DPA Commissioner"
+      key_requirements:
+        - "72-hour breach notification (Example DPA-2024)"
+        - "21-day DSAR response (Example DPA-P7)"
+        - "Security Principle compliance (Example DPA-P4)"
+
+    - name: "AIGE Framework"
+      authority: "MDEC"
+      key_requirements:
+        - "AI system accountability"
+        - "Fairness and bias monitoring"
+        - "Human oversight"
+
+  nist_csf_mapping:
+    reference: "../../docs/SECURITY-NIST-CSF-MAPPING.md"
+    functions:
+      - GOVERN
+      - IDENTIFY
+      - PROTECT
+      - DETECT
+      - RESPOND
+      - RECOVER

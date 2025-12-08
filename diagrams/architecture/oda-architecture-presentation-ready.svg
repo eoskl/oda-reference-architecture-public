@@ -1,0 +1,244 @@
+<svg width="1600" height="1130" viewBox="0 0 1600 1130" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <!-- 
+    ODA Architecture with Integrated Identity Management
+    Licensed under Apache License 2.0
+    Copyright © 2024
+    
+    Optimized for presentation use:
+    - 16:9 aspect ratio compatible
+    - Web-safe fonts for universal compatibility
+    - High contrast colors for projection
+    - Explicit dimensions for embedding
+  -->
+  
+  <!-- Define styles -->
+  <defs>
+    <style type="text/css">
+      .domain-box { fill: #ffffff; stroke: #2c3e50; stroke-width: 2; }
+      .sor-domain { fill: #3498db; }
+      .soe-domain { fill: #2ecc71; }
+      .soi-domain { fill: #e74c3c; }
+      .canvas-layer { fill: #9b59b6; }
+      .idm-layer { fill: #f39c12; }
+      .layer-label { font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; fill: #ffffff; }
+      .domain-label { font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+      .capability-code { font-family: 'Courier New', Courier, monospace; font-size: 10px; fill: #2980b9; font-weight: bold; }
+      .capability-name { font-family: Arial, Helvetica, sans-serif; font-size: 10px; fill: #34495e; }
+      .component-text { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #34495e; }
+      .security-text { font-family: Arial, Helvetica, sans-serif; font-size: 10px; fill: #8e44ad; font-weight: bold; }
+      .title-text { font-family: Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold; fill: #2c3e50; }
+      .subtitle-text { font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: #7f8c8d; }
+      .layer-bg { opacity: 0.15; }
+      .canvas-bg { opacity: 0.2; }
+      .auth-flow { stroke: #8e44ad; stroke-width: 2; stroke-dasharray: 5,5; fill: none; }
+    </style>
+    
+    <!-- Arrow markers -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#95a5a6" />
+    </marker>
+    <marker id="auth-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#8e44ad" />
+    </marker>
+    <marker id="security-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#e74c3c" />
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="1600" height="1130" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="800" y="35" text-anchor="middle" class="title-text">ODA Architecture with Integrated Identity Management</text>
+  <text x="800" y="58" text-anchor="middle" class="subtitle-text">Secure Component-Based Architecture with Centralized IAM</text>
+  
+  <!-- External Identity Management System Layer -->
+  <rect x="50" y="80" width="1500" height="80" class="idm-layer canvas-bg" rx="5"/>
+  <rect x="50" y="80" width="220" height="40" class="idm-layer" rx="5"/>
+  <text x="160" y="105" text-anchor="middle" class="layer-label">External Identity Provider</text>
+  
+  <!-- IDM System -->
+  <rect x="550" y="95" width="500" height="50" class="domain-box" rx="5"/>
+  <text x="800" y="115" text-anchor="middle" class="domain-label">Identity Management System (IDM)</text>
+  <text x="650" y="133" class="component-text">OAuth2/OIDC Provider (Keycloak, Azure AD, etc.)</text>
+  <text x="950" y="133" class="component-text">User Directory • Roles • Permissions</text>
+  
+  <!-- ODA Canvas Platform Layer -->
+  <rect x="50" y="180" width="1500" height="120" class="canvas-layer canvas-bg" rx="5"/>
+  <rect x="50" y="180" width="180" height="40" class="canvas-layer" rx="5"/>
+  <text x="140" y="205" text-anchor="middle" class="layer-label">ODA Canvas Platform</text>
+  
+  <!-- Canvas Services -->
+  <rect x="270" y="210" width="240" height="70" class="domain-box" rx="5"/>
+  <text x="390" y="230" text-anchor="middle" class="domain-label">Component Operators</text>
+  <text x="390" y="250" class="component-text">• Component Lifecycle Mgmt</text>
+  <text x="390" y="268" class="component-text">• Identity Resource Mgmt</text>
+  
+  <rect x="540" y="210" width="240" height="70" class="domain-box" rx="5"/>
+  <text x="660" y="230" text-anchor="middle" class="domain-label">Identity Operator</text>
+  <text x="660" y="250" class="component-text">• Client Provisioning</text>
+  <text x="660" y="268" class="component-text">• Role Synchronization</text>
+  
+  <rect x="810" y="210" width="240" height="70" class="domain-box" rx="5"/>
+  <text x="930" y="230" text-anchor="middle" class="domain-label">Secret Store</text>
+  <text x="930" y="250" class="component-text">• Credential Management</text>
+  <text x="930" y="268" class="component-text">• Token Storage</text>
+  
+  <rect x="1080" y="210" width="240" height="70" class="domain-box" rx="5"/>
+  <text x="1200" y="230" text-anchor="middle" class="domain-label">API Gateway</text>
+  <text x="1200" y="250" class="component-text">• Token Validation</text>
+  <text x="1200" y="268" class="component-text">• Authorization Enforcement</text>
+  
+  <!-- System of Engagement (SoE) Layer -->
+  <rect x="50" y="320" width="1500" height="140" class="soe-domain layer-bg" rx="5"/>
+  <rect x="50" y="320" width="180" height="40" class="soe-domain" rx="5"/>
+  <text x="140" y="345" text-anchor="middle" class="layer-label">System of Engagement</text>
+  
+  <!-- Engagement Domain -->
+  <rect x="270" y="340" width="1050" height="100" class="domain-box" rx="5"/>
+  <text x="795" y="362" text-anchor="middle" class="domain-label">Engagement Domain</text>
+  <text x="795" y="380" text-anchor="middle" class="security-text">🔒 Secured by OAuth2 JWT Tokens</text>
+  <text x="520" y="405" class="component-text">• Omnichannel Experience</text>
+  <text x="520" y="423" class="component-text">• Customer Journey Orchestration</text>
+  <text x="1070" y="405" class="component-text">• Digital Touchpoints (Web, Mobile, API)</text>
+  <text x="1070" y="423" class="component-text">• Campaign &amp; Offer Management</text>
+  
+  <!-- System of Records (SoR) Layer -->
+  <rect x="50" y="480" width="1500" height="280" class="sor-domain layer-bg" rx="5"/>
+  <rect x="50" y="480" width="150" height="40" class="sor-domain" rx="5"/>
+  <text x="125" y="505" text-anchor="middle" class="layer-label">System of Records</text>
+  
+  <!-- Party Domain with Identity Highlight -->
+  <rect x="80" y="540" width="420" height="200" class="domain-box" rx="5" stroke="#9b59b6" stroke-width="3"/>
+  <text x="290" y="562" text-anchor="middle" class="domain-label">Party Domain</text>
+  <text x="290" y="580" text-anchor="middle" class="security-text">⭐ Core Identity Services</text>
+  
+  <text x="95" y="605" class="capability-code">TMFC028</text>
+  <text x="165" y="605" class="capability-name">Party Management</text>
+  
+  <rect x="95" y="615" width="380" height="50" fill="#f3e5f5" stroke="#9b59b6" stroke-width="1" rx="3"/>
+  <text x="105" y="632" class="capability-code">TMFC035</text>
+  <text x="175" y="632" class="capability-name">Party Roles &amp; Permission Mgmt</text>
+  <text x="105" y="648" class="capability-code">TMFC020</text>
+  <text x="175" y="648" class="capability-name">Digital Identity Management</text>
+  <text x="175" y="660" class="security-text" font-size="9px">Implements TMF672 API for dynamic role management</text>
+  
+  <text x="95" y="685" class="capability-code">TMFC039</text>
+  <text x="165" y="685" class="capability-name">Agreement Management</text>
+  
+  <text x="290" y="708" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">All components authenticated via</text>
+  <text x="290" y="723" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">Party Domain identity services</text>
+  
+  <!-- Commerce Domain -->
+  <rect x="540" y="540" width="420" height="200" class="domain-box" rx="5"/>
+  <text x="750" y="562" text-anchor="middle" class="domain-label">Commerce Domain</text>
+  <text x="750" y="580" text-anchor="middle" class="security-text">🔒 Role-Based Access Control</text>
+  
+  <text x="555" y="605" class="capability-code">TMFC001</text>
+  <text x="625" y="605" class="capability-name">Product Catalog Management</text>
+  <text x="625" y="617" class="component-text" font-size="9px">Roles: Product Manager, Pricing Analyst</text>
+  
+  <text x="555" y="640" class="capability-code">TMFC002</text>
+  <text x="625" y="640" class="capability-name">Product Order Capture</text>
+  <text x="625" y="652" class="component-text" font-size="9px">Roles: Order Admin, Sales Agent</text>
+  
+  <text x="555" y="675" class="capability-code">TMFC005</text>
+  <text x="625" y="675" class="capability-name">Product Inventory Management</text>
+  <text x="625" y="687" class="component-text" font-size="9px">Roles: Inventory Controller</text>
+  
+  <text x="750" y="715" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">System User Identity for API calls</text>
+  <text x="750" y="728" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">to Party &amp; Production domains</text>
+  
+  <!-- Production Domain -->
+  <rect x="1000" y="540" width="470" height="200" class="domain-box" rx="5"/>
+  <text x="1235" y="562" text-anchor="middle" class="domain-label">Production Domain</text>
+  <text x="1235" y="580" text-anchor="middle" class="security-text">🔒 Service Account Authentication</text>
+  
+  <text x="1015" y="605" class="capability-code">TMFC008</text>
+  <text x="1085" y="605" class="capability-name">Service Inventory Management</text>
+  <text x="1085" y="617" class="component-text" font-size="9px">Roles: Service Provisioner, NOC Engineer</text>
+  
+  <text x="1015" y="640" class="capability-code">TMFC012</text>
+  <text x="1085" y="640" class="capability-name">Resource Inventory Management</text>
+  <text x="1085" y="652" class="component-text" font-size="9px">Roles: Network Engineer, Capacity Planner</text>
+  
+  <text x="1235" y="680" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">Service Activation &amp; Configuration</text>
+  <text x="1235" y="695" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">Network &amp; Infrastructure Control</text>
+  <text x="1235" y="715" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">Automated provisioning with</text>
+  <text x="1235" y="728" text-anchor="middle" class="component-text" font-style="italic" font-size="10px">machine-to-machine authentication</text>
+  
+  <!-- System of Innovation (SoI) Layer -->
+  <rect x="50" y="780" width="1500" height="140" class="soi-domain layer-bg" rx="5"/>
+  <rect x="50" y="780" width="170" height="40" class="soi-domain" rx="5"/>
+  <text x="135" y="805" text-anchor="middle" class="layer-label">System of Innovation</text>
+  
+  <!-- Intelligence Domain -->
+  <rect x="270" y="800" width="1050" height="100" class="domain-box" rx="5"/>
+  <text x="795" y="822" text-anchor="middle" class="domain-label">Intelligence Domain</text>
+  <text x="795" y="840" text-anchor="middle" class="security-text">🔒 Read-Only Service Accounts</text>
+  <text x="520" y="865" class="component-text">• Business Intelligence &amp; Analytics</text>
+  <text x="520" y="883" class="component-text">• AI/ML Services &amp; Predictive Models</text>
+  <text x="1070" y="865" class="component-text">• Real-time Insights &amp; Monitoring</text>
+  <text x="1070" y="883" class="component-text">• Intelligent Automation &amp; Orchestration</text>
+  
+  <!-- Authentication Flows -->
+  <!-- IDM to Canvas -->
+  <path d="M 660 145 L 660 210" class="auth-flow" marker-end="url(#auth-arrow)"/>
+  <text x="670" y="175" class="security-text" font-size="9px">OAuth2 Client</text>
+  <text x="670" y="187" class="security-text" font-size="9px">Provisioning</text>
+  
+  <!-- Canvas to Party Domain -->
+  <path d="M 390 280 L 290 540" class="auth-flow" marker-end="url(#auth-arrow)"/>
+  <text x="320" y="400" class="security-text" font-size="9px">Bootstrap</text>
+  <text x="320" y="412" class="security-text" font-size="9px">Admin Role</text>
+  
+  <!-- API Gateway to Engagement -->
+  <path d="M 1200 280 L 1200 340" stroke="#e74c3c" stroke-width="2" fill="none" marker-end="url(#security-arrow)"/>
+  <text x="1210" y="310" class="security-text" font-size="9px">Token</text>
+  <text x="1210" y="322" class="security-text" font-size="9px">Validation</text>
+  
+  <!-- Cross-domain authenticated calls -->
+  <path d="M 795 440 L 290 540" stroke="#8e44ad" stroke-width="2" stroke-dasharray="3,3" fill="none" marker-end="url(#auth-arrow)"/>
+  <text x="500" y="485" class="security-text" font-size="9px">JWT Token</text>
+  
+  <path d="M 795 440 L 750 540" stroke="#8e44ad" stroke-width="2" stroke-dasharray="3,3" fill="none" marker-end="url(#auth-arrow)"/>
+  
+  <path d="M 795 440 L 1235 540" stroke="#8e44ad" stroke-width="2" stroke-dasharray="3,3" fill="none" marker-end="url(#auth-arrow)"/>
+  <text x="980" y="485" class="security-text" font-size="9px">JWT Token</text>
+  
+  <!-- SoR to SoI data flow -->
+  <path d="M 290 740 L 795 800" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <path d="M 750 740 L 795 800" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <path d="M 1235 740 L 795 800" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  
+  <!-- License -->
+  <text x="50" y="950" class="component-text" font-size="10px" fill="#7f8c8d">Licensed under Apache License 2.0 - Copyright © 2024</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="970" width="1500" height="140" fill="#f8f9fa" stroke="#bdc3c7" stroke-width="1" rx="5"/>
+  
+  <text x="70" y="995" class="domain-label">Security Flow Legend:</text>
+  
+  <path d="M 70 1005 L 130 1005" class="auth-flow" marker-end="url(#auth-arrow)"/>
+  <text x="140" y="1010" class="component-text">OAuth2/OIDC Authentication Flow</text>
+  
+  <path d="M 70 1025 L 130 1025" stroke="#e74c3c" stroke-width="2" fill="none" marker-end="url(#security-arrow)"/>
+  <text x="140" y="1030" class="component-text">Token Validation &amp; Authorization</text>
+  
+  <path d="M 70 1045 L 130 1045" stroke="#95a5a6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <text x="140" y="1050" class="component-text">Authorized Data Flow</text>
+  
+  <text x="450" y="995" class="domain-label">Identity Management Process:</text>
+  <text x="450" y="1015" class="component-text">1. Component Operator creates Identity Resource during component installation</text>
+  <text x="450" y="1033" class="component-text">2. Identity Operator provisions OAuth2 client and system user in IDM</text>
+  <text x="450" y="1051" class="component-text">3. Canvas assigns bootstrap admin role; credentials stored in Secret Store</text>
+  <text x="450" y="1069" class="component-text">4. Components implement TMF672 API for dynamic role management (optional)</text>
+  <text x="450" y="1087" class="component-text">5. All API calls authenticated with JWT tokens; authorization enforced by API Gateway</text>
+  
+  <text x="1150" y="995" class="domain-label">Key Security Controls:</text>
+  <text x="1150" y="1015" class="component-text">✓ Zero Trust Architecture</text>
+  <text x="1150" y="1033" class="component-text">✓ Component Isolation</text>
+  <text x="1150" y="1051" class="component-text">✓ Fine-grained RBAC</text>
+  <text x="1150" y="1069" class="component-text">✓ Centralized IAM</text>
+  <text x="1150" y="1087" class="component-text">✓ Automated Credential Mgmt</text>
+</svg>
