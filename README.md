@@ -16,6 +16,61 @@ This repository provides a production-ready reference architecture for deploying
 - **Regulatory Compliance**: Layered model separating jurisdiction-specific requirements from reusable implementation
 - **Breach Response**: Automated detection, compliance workflows, and incident response procedures
 
+### Architecture Vision: Combining Existing BSS with ODA Canvas Federation
+
+This reference architecture demonstrates how to **combine existing Business Support Systems (BSS) with new ODA-compliant federation components** to enable GSMA Open Gateway (Camara) capabilities:
+
+**Existing BSS Layer** (represented by [TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)):
+- Proven BSS systems handling core telecom operations
+- Product catalog, ordering, billing, customer management
+- TMF931 Operate APIs provide standardized interface to existing BSS
+- Supports GSMA Camara Open Gateway Platform integration
+
+**Federation Layer** (built using [ODA Canvas](https://github.com/tmforum-oda/oda-canvas) framework):
+- New ODA-compliant components for federation and orchestration
+- Identity management, role-based access control (TMFC035)
+- API gateway, service mesh, observability
+- Developer portal for Open Gateway API exposure
+- Multi-tenant isolation and governance
+
+**Integration Approach**:
+```
+┌──────────────────────────────────────────────────────────┐
+│  GSMA Open Gateway / Camara APIs                        │
+│  (Network APIs: QoD, Device Location, SIM Swap, etc.)   │
+└────────────────────┬─────────────────────────────────────┘
+                     │
+┌────────────────────▼─────────────────────────────────────┐
+│  Federation Layer (ODA Canvas Components)               │
+│  - API Gateway, Identity Management (TMFC035)           │
+│  - Developer Portal, Analytics                          │
+│  - Multi-tenant governance                              │
+└────────────────────┬─────────────────────────────────────┘
+                     │
+┌────────────────────▼─────────────────────────────────────┐
+│  TMF931 Operate APIs                                    │
+│  (Standardized interface to existing BSS)              │
+└────────────────────┬─────────────────────────────────────┘
+                     │
+┌────────────────────▼─────────────────────────────────────┐
+│  Existing BSS Systems                                   │
+│  - Product Catalog, Ordering, Billing                  │
+│  - Customer Management, Inventory                       │
+└─────────────────────────────────────────────────────────┘
+```
+
+This architecture enables telecom operators to:
+- ✅ Leverage existing BSS investments (via TMF931)
+- ✅ Add Open Gateway capabilities without replacing BSS
+- ✅ Build ODA-compliant federation layer incrementally
+- ✅ Expose network APIs (Camara) through standardized interfaces
+- ✅ Maintain security, compliance, and governance
+
+**Key Standards**:
+- **[TM Forum ODA Canvas](https://github.com/tmforum-oda/oda-canvas)**: Framework for building ODA-compliant components
+- **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)**: Standardized API for existing BSS integration
+- **[GSMA Open Gateway (Camara)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)**: Network API specifications
+
 ### What's Included
 
 ✅ **Architecture Documentation**: Detailed technical documentation with diagrams
@@ -25,6 +80,8 @@ This repository provides a production-ready reference architecture for deploying
 ✅ **Implementation Examples**: Production-ready configurations for mobile network operators
 ✅ **Breach Simulations**: Real-world scenarios with bottom-up compliance flow
 ✅ **Alert Configurations**: Prometheus and SIEM rules with regulatory mappings
+✅ **ODA Canvas Integration**: Reference implementation following ODA Canvas patterns
+✅ **TMF931 Mapping**: Integration patterns for existing BSS via Operate APIs
 
 ## Architecture Layers
 
@@ -303,13 +360,117 @@ See `docs/compliance/example-jurisdiction/BREACH-SIMULATION.md` for complete sce
 
 ## Integration Patterns
 
-### GSMA Open Gateway Integration
+### GSMA Open Gateway Integration with TMF931
 
-This architecture supports GSMA Open Gateway Network APIs:
-- Developer portal integration via Engagement Domain
-- API authentication through centralized IAM
-- Network resource exposure via Production Domain
-- Usage analytics through Intelligence Domain
+This architecture demonstrates the integration of **GSMA Open Gateway (Camara)** capabilities with existing BSS systems using **TMF931 Operate APIs**:
+
+#### Architecture Overview
+
+```
+Developer                  Federation Layer              Existing BSS
+   │                       (ODA Canvas)                   (TMF931)
+   │                            │                            │
+   ├─> Register App ────────────┤                            │
+   │   (Developer Portal)       │                            │
+   │                            │                            │
+   ├─> Request API Access ──────┤                            │
+   │   (OAuth2 Client)          │                            │
+   │                            │                            │
+   ├─> Call Camara API ─────────┤                            │
+   │   (QoD, Location, etc.)    │                            │
+   │                            │                            │
+   │                            ├──> TMF931 Operate APIs ────┤
+   │                            │    (Onboarding, Ordering)  │
+   │                            │                            │
+   │                            │                            ├──> BSS Systems
+   │                            │                            │    (Catalog, Order, Bill)
+   │                            │                            │
+   │   <─── API Response ───────┤<─── BSS Response ──────────┤
+```
+
+#### TMF931 Open Gateway Operate API
+
+**Purpose**: Provides standardized interface to existing BSS for Open Gateway operations
+
+**Key APIs**:
+- **Onboarding API**: Register developers, manage API products
+- **Ordering API**: Handle API subscriptions, usage-based ordering
+- **Product Catalog**: Expose available Open Gateway APIs as products
+- **Usage Management**: Track API consumption, billing
+
+**Benefits**:
+- ✅ No need to replace existing BSS
+- ✅ Standardized interface across different BSS vendors
+- ✅ Reuse existing billing, catalog, and CRM capabilities
+- ✅ Gradual migration to ODA-compliant architecture
+
+#### ODA Canvas Components (Federation Layer)
+
+**Purpose**: New components built using [ODA Canvas framework](https://github.com/tmforum-oda/oda-canvas) for federation and governance
+
+**Key Components**:
+- **Developer Portal** (Engagement Domain): Self-service API registration
+- **Identity Management** (TMFC035 - Party Domain): OAuth2/OIDC, developer authentication, API key management
+- **API Gateway** (ODA Canvas Platform): Request routing, rate limiting, token validation
+- **Analytics** (Intelligence Domain): API usage analytics, developer insights
+
+**ODA Canvas Compliance**:
+- Follow [ODA Component specification](https://github.com/tmforum-oda/oda-canvas)
+- Automated component lifecycle management
+- Event-driven architecture
+- Declarative deployment via Kubernetes operators
+
+#### Integration Flow: Developer Onboarding
+
+1. **Developer Registration** (Engagement Domain)
+   - Developer signs up via portal
+   - Creates organization account
+
+2. **Identity Provisioning** (TMFC035 via TMF931)
+   - Identity Operator calls TMF931 Onboarding API
+   - BSS creates customer record
+   - OAuth2 client provisioned
+   - API credentials generated
+
+3. **API Product Selection** (TMF931 Product Catalog)
+   - Developer browses available Camara APIs (QoD, Location, SIM Swap, etc.)
+   - Selects API products
+   - Reviews pricing and SLAs
+
+4. **API Subscription** (TMF931 Ordering API)
+   - Developer places order for API access
+   - BSS processes order through existing workflows
+   - Subscription activated
+   - Usage quotas assigned
+
+5. **API Access** (ODA Canvas API Gateway)
+   - Developer receives OAuth2 credentials
+   - Calls Camara APIs with access token
+   - API Gateway validates token
+   - Routes request to network resources via Production Domain
+
+#### Camara API Examples
+
+**Network APIs exposed**:
+- **Quality on Demand (QoD)**: Request guaranteed bandwidth
+- **Device Location**: Get device location
+- **SIM Swap**: Detect SIM swap for fraud prevention
+- **Number Verification**: Verify phone number ownership
+- **Edge Discovery**: Find nearest edge compute location
+
+#### Revenue Integration
+
+**Via TMF931**:
+- API usage tracked in existing BSS
+- Usage-based billing through existing billing system
+- Revenue sharing with developers
+- Invoice generation via BSS
+
+**Via Intelligence Domain**:
+- Real-time usage analytics
+- Predictive revenue forecasting
+- Developer behavior insights
+- API performance metrics
 
 ### Multi-Tenant Deployments
 
