@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![GSMA OPG](https://img.shields.io/badge/GSMA-Open%20Gateway-red.svg)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)
 [![TM Forum ODA](https://img.shields.io/badge/TM%20Forum-ODA%20Canvas-orange.svg)](https://github.com/vpnetconsult/oda-canvas)
+[![TMF931](https://img.shields.io/badge/TMF931-Operate%20API-orange.svg)](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)
 [![OPG.10](https://img.shields.io/badge/OPG.10-v3.0-blue.svg)](https://www.gsma.com/opengateway/)
 [![NIST CSF 2.0](https://img.shields.io/badge/NIST%20CSF-2.0-green.svg)](https://www.nist.gov/cyberframework)
 
@@ -15,7 +16,7 @@ This repository provides a **Reference Framework for deploying GSMA Open Gateway
 
 - **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](docs/references/OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf)** (Official GSMA Document, October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)** (Component Development Framework)
-- **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)** (BSS Integration Interface)
+- **[TMF931 Open Gateway Operate API](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)** (BSS Integration Interface)
 
 **Target Audience**: Telecom operators implementing GSMA Open Gateway (Camara Network APIs) following OPG.10 v3.0 guidelines with production-grade security, compliance, and operational practices.
 
@@ -35,7 +36,7 @@ This reference framework demonstrates how to build an **Open Gateway Platform MV
 
 This reference architecture demonstrates how to **combine existing Business Support Systems (BSS) with new ODA-compliant federation components** to enable GSMA Open Gateway (Camara) capabilities:
 
-**Existing BSS Layer** (represented by [TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)):
+**Existing BSS Layer** (represented by [TMF931 Open Gateway Operate API](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)):
 - Proven BSS systems handling core telecom operations
 - Product catalog, ordering, billing, customer management
 - TMF931 Operate APIs provide standardized interface to existing BSS
@@ -84,7 +85,7 @@ This architecture enables telecom operators to:
 **Key Standards & Frameworks**:
 - **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](docs/references/OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf)**: Official GSMA specification for Open Gateway Platform deployment architecture (October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)**: Framework for building ODA-compliant federation components
-- **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)**: Standardized API for existing BSS integration (Onboarding & Ordering)
+- **[TMF931 Open Gateway Operate API](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)**: Standardized API for existing BSS integration (Onboarding & Ordering)
 - **[GSMA Open Gateway (Camara)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)**: Network API specifications (QoD, Location, SIM Swap, etc.)
 
 ### What's Included
