@@ -7,6 +7,7 @@
 [![GSMA OPG](https://img.shields.io/badge/GSMA-Open%20Gateway-red.svg)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)
 [![TM Forum ODA](https://img.shields.io/badge/TM%20Forum-ODA%20Canvas-orange.svg)](https://github.com/vpnetconsult/oda-canvas)
 [![TMF931](https://img.shields.io/badge/TMF931-Operate%20API-orange.svg)](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)
+[![TMF932](https://img.shields.io/badge/TMF932-Autonomous%20Assurance-purple.svg)](#tmf932-autonomous-service-assurance)
 [![OPG.10](https://img.shields.io/badge/OPG.10-v3.0-blue.svg)](https://www.gsma.com/opengateway/)
 [![NIST CSF 2.0](https://img.shields.io/badge/NIST%20CSF-2.0-green.svg)](https://www.nist.gov/cyberframework)
 
@@ -16,7 +17,8 @@ This repository provides a **Reference Framework for deploying GSMA Open Gateway
 
 - **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](docs/references/OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf)** (Official GSMA Document, October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)** (Component Development Framework)
-- **[TMF931 Open Gateway Operate API](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)** (BSS Integration Interface)
+- **[TMF931 Open Gateway Operate API](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)** (BSS Integration - Operate)
+- **TMF932 Autonomous Service Assurance** (BSS Integration - Assure)
 
 **Target Audience**: Telecom operators implementing GSMA Open Gateway (Camara Network APIs) following OPG.10 v3.0 guidelines with production-grade security, compliance, and operational practices.
 
@@ -26,7 +28,7 @@ This reference framework demonstrates how to build an **Open Gateway Platform MV
 
 - ✅ Follows **OPG.10 Technical Realisation Guidelines v3.0** for Open Gateway deployment
 - ✅ Uses **TM Forum ODA Canvas** framework for building ODA-compliant federation components
-- ✅ Integrates **existing BSS systems** via TMF931 Operate APIs (no BSS replacement required)
+- ✅ Integrates **existing BSS systems** via TMF931 (Operate) and TMF932 (Assure) APIs (no BSS replacement required)
 - ✅ Exposes **GSMA Camara Network APIs** (QoD, Device Location, SIM Swap, Number Verification)
 - ✅ Implements **security controls** aligned with NIST Cybersecurity Framework 2.0
 - ✅ Provides **regulatory compliance** framework adaptable to any jurisdiction
@@ -86,6 +88,7 @@ This architecture enables telecom operators to:
 - **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](docs/references/OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf)**: Official GSMA specification for Open Gateway Platform deployment architecture (October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)**: Framework for building ODA-compliant federation components
 - **[TMF931 Open Gateway Operate API](https://github.com/vpnetconsult/TMF931_OpenGatewayOnboardingAndOrderingComponentSuite)**: Standardized API for existing BSS integration (Onboarding & Ordering)
+- **TMF932 Autonomous Service Assurance**: Standardized API for autonomous fault management, service problem detection, and trouble ticket resolution (Level 4 Autonomy)
 - **[GSMA Open Gateway (Camara)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)**: Network API specifications (QoD, Location, SIM Swap, etc.)
 
 ### What's Included
@@ -503,6 +506,161 @@ Developer                  Federation Layer              Existing BSS
 - Predictive revenue forecasting
 - Developer behavior insights
 - API performance metrics
+
+---
+
+## TMF932 Autonomous Service Assurance
+
+### Overview
+
+**TMF932 Autonomous Service Assurance** provides standardized APIs for autonomous fault detection, service problem management, and trouble ticket resolution, achieving **TM Forum Level 4 Autonomy** where AI anticipates problems and automatically recalibrates networks to preserve peak efficiency.
+
+**Reference Implementation**: Malaysia's Digital Nasional Berhad (DNB) became the [first mobile operator validated by TM Forum for Level 4 autonomy](https://developingtelecoms.com/telecom-technology/wireless-networks/19210-tmf-validates-dnb-ericsson-at-level-4-autonomy-in-service-assurance.html) in service assurance on its 5G network using Ericsson's AI-powered Intent-based Operations.
+
+### TM Forum Autonomy Levels
+
+| Level | Capability | Description |
+|-------|-----------|-------------|
+| **Level 0** | Manual | Human-driven operations |
+| **Level 1** | Assisted | System provides recommendations |
+| **Level 2** | Partial | Automated execution with human approval |
+| **Level 3** | Conditional | Autonomous within defined conditions |
+| **Level 4** | High | **AI anticipates problems, auto-recalibrates, operates independently** |
+| **Level 5** | Full | Complete autonomy across all scenarios |
+
+### Architecture Overview
+
+```
+Network Fault             Service Assurance              Existing BSS
+   │                       (ODA Canvas)                   (TMF932)
+   │                            │                            │
+   ├─> Alarm Detected ──────────┤                            │
+   │   (Network Element)        │                            │
+   │                            │                            │
+   │   AI Analysis ─────────────┤                            │
+   │   (TMFC043 Fault Mgmt)     │                            │
+   │                            │                            │
+   │   Service Problem ─────────┤                            │
+   │   (TMF656)                 │                            │
+   │                            │                            │
+   │                            ├──> TMF932 Assurance APIs ──┤
+   │                            │    (Fault, Problem, Ticket) │
+   │                            │                            │
+   │                            │                            ├──> BSS Systems
+   │                            │                            │    (Trouble Ticket, SLA)
+   │                            │                            │
+   │   <─── Auto-Remediation ───┤<─── AI Decision ───────────┤
+   │   (Level 4 Autonomy)       │                            │
+```
+
+### TMF932 Core APIs (BSS Integration Layer)
+
+**Purpose**: Standardized interface to existing BSS for autonomous service assurance operations
+
+**Key APIs**:
+- **TMFC043 - Fault Management**: AI-powered fault detection and diagnosis (network → service propagation)
+- **TMF656 - Service Problem Management**: Correlate faults into service problems, predict impact
+- **TMF621 - Trouble Ticket Management**: Automated ticket creation, routing, and resolution
+- **TMF623 - SLA Management**: Monitor SLAs, trigger automated remediation
+- **TMF628 - Performance Management**: Real-time KPI monitoring and anomaly detection
+
+**Benefits**:
+- ✅ Level 4 Autonomy: AI anticipates and auto-remediates issues
+- ✅ No need to replace existing OSS/BSS
+- ✅ Reduced MTTR (Mean Time To Resolution)
+- ✅ Proactive service quality management
+- ✅ Standardized interface across different OSS vendors
+
+### ODA Canvas Components (Autonomous Assurance Layer)
+
+**Purpose**: New ODA-compliant components for autonomous service assurance, built using ODA Canvas framework
+
+**Key Components**:
+- **TMFC043 - Fault Management** (Production Domain): AI-powered fault correlation and root cause analysis
+- **Service Problem Management** (Production Domain): Predictive problem detection using ML
+- **Trouble Ticket Automation** (Engagement Domain): Intelligent ticket routing to NOC/call center
+- **Performance Analytics** (Intelligence Domain): Real-time KPI monitoring, anomaly detection
+- **Intent-based Operations** (Intelligence Domain): Translate business intent to network actions
+
+**ODA Canvas Compliance**:
+- Follow [ODA Component specification](https://github.com/vpnetconsult/oda-canvas)
+- Event-driven architecture for real-time fault propagation
+- AI/ML models deployed as microservices
+- Automated lifecycle management via Kubernetes operators
+
+### Autonomous Assurance Flow
+
+1. **Fault Detection** (TMFC043 via TMF932)
+   - Network element generates alarm
+   - AI correlates alarms across network
+   - Root cause analysis identifies source
+   - Severity classification (critical, major, minor)
+
+2. **Service Impact Analysis** (TMF656 via TMF932)
+   - Map network faults to affected services
+   - Predict customer/SLA impact
+   - Create service problem record in BSS
+   - Prioritize based on business impact
+
+3. **Automated Ticket Creation** (TMF621 via TMF932)
+   - AI decides: auto-remediate or escalate
+   - Generate trouble ticket if human intervention needed
+   - Route to appropriate team (NOC, field ops)
+   - Track resolution SLAs
+
+4. **AI-Driven Remediation** (Level 4 Autonomy)
+   - AI analyzes historical patterns
+   - Predicts optimal remediation action
+   - Executes network reconfiguration automatically
+   - Monitors outcome and learns
+
+5. **Continuous Optimization** (Intelligence Domain)
+   - Real-time performance monitoring
+   - Detect degradation before failure
+   - Adjust resources proactively
+   - Update ML models with learnings
+
+### Level 4 Autonomy Capabilities
+
+**Real-time Monitoring, Analysis, Optimization**:
+- Network continuously monitors KPIs
+- AI detects anomalies before they become faults
+- Automatic resource reallocation (e.g., throughput management)
+- Self-healing networks
+
+**Mission-Critical Use Cases** (validated by DNB):
+- **Public Safety**: Guaranteed connectivity for emergency services
+- **Healthcare**: Reliable telemedicine, remote surgery
+- **Smart Cities**: Traffic management, utilities monitoring
+- **Autonomous Transportation**: V2X communication, fleet management
+
+### Integration with TMF931 (Operate)
+
+**Complementary Abstractions**:
+
+| Aspect | TMF931 (Operate) | TMF932 (Assure) |
+|--------|-----------------|----------------|
+| **Purpose** | Developer onboarding, API exposure | Service quality, fault resolution |
+| **Domain** | Open Gateway (NEF/CAMARA) | Service Assurance (OSS) |
+| **Key APIs** | Onboarding, Ordering, Catalog | Fault Mgmt, Problem Mgmt, Trouble Ticket |
+| **User** | External developers | Network operations, AI agents |
+| **Autonomy** | Human-driven (Level 0-2) | AI-driven (Level 4) |
+| **Example** | Developer subscribes to QoD API | Network auto-adjusts bandwidth to maintain QoD SLA |
+
+**Combined Flow**:
+```
+Developer requests QoD API (TMF931)
+    ↓
+Network allocates bandwidth resources
+    ↓
+TMF932 monitors QoD SLA compliance
+    ↓
+Fault detected: congestion affecting QoD
+    ↓
+Level 4 AI auto-remediates: reallocate bandwidth
+    ↓
+QoD SLA maintained, developer unaffected
+```
 
 ### Multi-Tenant Deployments
 
