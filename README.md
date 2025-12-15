@@ -13,7 +13,7 @@
 
 This repository provides a **Reference Framework for deploying GSMA Open Gateway Platform (OPG) Minimum Viable Product (MVP)** based on:
 
-- **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](https://www.gsma.com/opengateway/)** (Official GSMA Document, October 2025)
+- **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](docs/references/OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf)** (Official GSMA Document, October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)** (Component Development Framework)
 - **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)** (BSS Integration Interface)
 
@@ -82,7 +82,7 @@ This architecture enables telecom operators to:
 - ✅ Maintain security, compliance, and governance
 
 **Key Standards & Frameworks**:
-- **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](https://www.gsma.com/opengateway/)**: Official GSMA specification for Open Gateway Platform deployment architecture (October 2025)
+- **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](docs/references/OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf)**: Official GSMA specification for Open Gateway Platform deployment architecture (October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)**: Framework for building ODA-compliant federation components
 - **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)**: Standardized API for existing BSS integration (Onboarding & Ordering)
 - **[GSMA Open Gateway (Camara)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)**: Network API specifications (QoD, Location, SIM Swap, etc.)
@@ -218,6 +218,8 @@ oda-reference-architecture/
 └── docs/                               # Technical documentation
     ├── ARCHITECTURE.md                 # Detailed architecture documentation
     ├── SECURITY-NIST-CSF-MAPPING.md    # NIST CSF 2.0 security mapping
+    ├── references/                     # Reference documents
+    │   └── OPG.10-CR1003-Open-Gateway-Technical-Realisation-Guidelines.pdf
     └── compliance/                     # Jurisdiction-specific compliance
         └── example-jurisdiction/       # Example compliance mapping
             ├── REGULATORY-COMPLIANCE.md
