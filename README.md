@@ -5,7 +5,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![GSMA OPG](https://img.shields.io/badge/GSMA-Open%20Gateway-red.svg)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)
-[![TM Forum ODA](https://img.shields.io/badge/TM%20Forum-ODA%20Canvas-orange.svg)](https://github.com/tmforum-oda/oda-canvas)
+[![TM Forum ODA](https://img.shields.io/badge/TM%20Forum-ODA%20Canvas-orange.svg)](https://github.com/vpnetconsult/oda-canvas)
 [![OPG.10](https://img.shields.io/badge/OPG.10-Technical%20Realisation-blue.svg)](https://www.gsma.com/opengateway/)
 [![NIST CSF 2.0](https://img.shields.io/badge/NIST%20CSF-2.0-green.svg)](https://www.nist.gov/cyberframework)
 
@@ -14,7 +14,7 @@
 This repository provides a **Reference Framework for deploying GSMA Open Gateway Platform (OPG) Minimum Viable Product (MVP)** based on:
 
 - **[OPG.10 – Open Gateway Technical Realisation Guidelines](https://www.gsma.com/opengateway/)** (Official GSMA Document)
-- **[TM Forum ODA Canvas](https://github.com/tmforum-oda/oda-canvas)** (Component Development Framework)
+- **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)** (Component Development Framework)
 - **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)** (BSS Integration Interface)
 
 **Target Audience**: Telecom operators implementing GSMA Open Gateway (Camara Network APIs) following OPG.10 guidelines with production-grade security, compliance, and operational practices.
@@ -41,7 +41,7 @@ This reference architecture demonstrates how to **combine existing Business Supp
 - TMF931 Operate APIs provide standardized interface to existing BSS
 - Supports GSMA Camara Open Gateway Platform integration
 
-**Federation Layer** (built using [ODA Canvas](https://github.com/tmforum-oda/oda-canvas) framework):
+**Federation Layer** (built using [ODA Canvas](https://github.com/vpnetconsult/oda-canvas) framework):
 - New ODA-compliant components for federation and orchestration
 - Identity management, role-based access control (TMFC035)
 - API gateway, service mesh, observability
@@ -83,7 +83,7 @@ This architecture enables telecom operators to:
 
 **Key Standards & Frameworks**:
 - **[OPG.10 – Open Gateway Technical Realisation Guidelines](https://www.gsma.com/opengateway/)**: Official GSMA specification for Open Gateway Platform deployment architecture
-- **[TM Forum ODA Canvas](https://github.com/tmforum-oda/oda-canvas)**: Framework for building ODA-compliant federation components
+- **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)**: Framework for building ODA-compliant federation components
 - **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)**: Standardized API for existing BSS integration (Onboarding & Ordering)
 - **[GSMA Open Gateway (Camara)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)**: Network API specifications (QoD, Location, SIM Swap, etc.)
 
@@ -435,7 +435,7 @@ Developer                  Federation Layer              Existing BSS
 
 #### ODA Canvas Components (OPG.10 Federation Layer)
 
-**Purpose**: New ODA-compliant components for federation and governance, built using [ODA Canvas framework](https://github.com/tmforum-oda/oda-canvas) following OPG.10 guidelines
+**Purpose**: New ODA-compliant components for federation and governance, built using [ODA Canvas framework](https://github.com/vpnetconsult/oda-canvas) following OPG.10 guidelines
 
 **Key Components**:
 - **Developer Portal** (Engagement Domain): Self-service API registration
@@ -444,7 +444,7 @@ Developer                  Federation Layer              Existing BSS
 - **Analytics** (Intelligence Domain): API usage analytics, developer insights
 
 **ODA Canvas Compliance**:
-- Follow [ODA Component specification](https://github.com/tmforum-oda/oda-canvas)
+- Follow [ODA Component specification](https://github.com/vpnetconsult/oda-canvas)
 - Automated component lifecycle management
 - Event-driven architecture
 - Declarative deployment via Kubernetes operators
