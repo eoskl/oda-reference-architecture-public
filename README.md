@@ -1,29 +1,29 @@
 # GSMA Open Gateway Reference Framework
-## OPG.10 Technical Realisation Guidelines - Minimum Viable Product
+## OPG.10 v3.0 Technical Realisation Guidelines - Minimum Viable Product
 
 **Reference framework for deploying GSMA Open Gateway Platform using TM Forum ODA Canvas**
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![GSMA OPG](https://img.shields.io/badge/GSMA-Open%20Gateway-red.svg)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)
 [![TM Forum ODA](https://img.shields.io/badge/TM%20Forum-ODA%20Canvas-orange.svg)](https://github.com/vpnetconsult/oda-canvas)
-[![OPG.10](https://img.shields.io/badge/OPG.10-Technical%20Realisation-blue.svg)](https://www.gsma.com/opengateway/)
+[![OPG.10](https://img.shields.io/badge/OPG.10-v3.0-blue.svg)](https://www.gsma.com/opengateway/)
 [![NIST CSF 2.0](https://img.shields.io/badge/NIST%20CSF-2.0-green.svg)](https://www.nist.gov/cyberframework)
 
 ## Purpose
 
 This repository provides a **Reference Framework for deploying GSMA Open Gateway Platform (OPG) Minimum Viable Product (MVP)** based on:
 
-- **[OPG.10 – Open Gateway Technical Realisation Guidelines](https://www.gsma.com/opengateway/)** (Official GSMA Document)
+- **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](https://www.gsma.com/opengateway/)** (Official GSMA Document, October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)** (Component Development Framework)
 - **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)** (BSS Integration Interface)
 
-**Target Audience**: Telecom operators implementing GSMA Open Gateway (Camara Network APIs) following OPG.10 guidelines with production-grade security, compliance, and operational practices.
+**Target Audience**: Telecom operators implementing GSMA Open Gateway (Camara Network APIs) following OPG.10 v3.0 guidelines with production-grade security, compliance, and operational practices.
 
 ## Overview
 
 This reference framework demonstrates how to build an **Open Gateway Platform MVP** that:
 
-- ✅ Follows **OPG.10 Technical Realisation Guidelines** for Open Gateway deployment
+- ✅ Follows **OPG.10 Technical Realisation Guidelines v3.0** for Open Gateway deployment
 - ✅ Uses **TM Forum ODA Canvas** framework for building ODA-compliant federation components
 - ✅ Integrates **existing BSS systems** via TMF931 Operate APIs (no BSS replacement required)
 - ✅ Exposes **GSMA Camara Network APIs** (QoD, Device Location, SIM Swap, Number Verification)
@@ -31,7 +31,7 @@ This reference framework demonstrates how to build an **Open Gateway Platform MV
 - ✅ Provides **regulatory compliance** framework adaptable to any jurisdiction
 - ✅ Includes **production-ready** configurations, monitoring, and incident response
 
-### Architecture Vision: OPG.10 Realisation Using ODA Canvas
+### Architecture Vision: OPG.10 v3.0 Realisation Using ODA Canvas
 
 This reference architecture demonstrates how to **combine existing Business Support Systems (BSS) with new ODA-compliant federation components** to enable GSMA Open Gateway (Camara) capabilities:
 
@@ -82,14 +82,14 @@ This architecture enables telecom operators to:
 - ✅ Maintain security, compliance, and governance
 
 **Key Standards & Frameworks**:
-- **[OPG.10 – Open Gateway Technical Realisation Guidelines](https://www.gsma.com/opengateway/)**: Official GSMA specification for Open Gateway Platform deployment architecture
+- **[OPG.10 – Open Gateway Technical Realisation Guidelines v3.0](https://www.gsma.com/opengateway/)**: Official GSMA specification for Open Gateway Platform deployment architecture (October 2025)
 - **[TM Forum ODA Canvas](https://github.com/vpnetconsult/oda-canvas)**: Framework for building ODA-compliant federation components
 - **[TMF931 Open Gateway Operate API](https://www.tmforum.org/resources/specification/tmf931-open-gateway-operate-api-onboarding-and-ordering-user-guide/)**: Standardized API for existing BSS integration (Onboarding & Ordering)
 - **[GSMA Open Gateway (Camara)](https://www.gsma.com/solutions-and-impact/technologies/open-gateway/)**: Network API specifications (QoD, Location, SIM Swap, etc.)
 
 ### What's Included
 
-✅ **OPG.10 Reference Implementation**: Architecture aligned with GSMA Open Gateway Technical Realisation Guidelines
+✅ **OPG.10 v3.0 Reference Implementation**: Architecture aligned with GSMA Open Gateway Technical Realisation Guidelines v3.0
 ✅ **ODA Canvas Integration**: Reference implementation following TM Forum ODA Canvas patterns for federation components
 ✅ **TMF931 BSS Integration**: Integration patterns for existing BSS via Open Gateway Operate APIs
 ✅ **ODA Component Specifications**: TMF approved component manifests (TMFC035 Permissions Management example)
@@ -263,9 +263,9 @@ See `docs/compliance/example-jurisdiction/REGULATORY-COMPLIANCE.md` for template
 
 ## Use Cases
 
-### Primary: GSMA Open Gateway Platform (OPG.10) Deployment
+### Primary: GSMA Open Gateway Platform (OPG.10 v3.0) Deployment
 
-**Target Operators**: Telecom operators deploying GSMA Open Gateway following OPG.10 Technical Realisation Guidelines
+**Target Operators**: Telecom operators deploying GSMA Open Gateway following OPG.10 Technical Realisation Guidelines v3.0
 
 **Deployment Scenarios**:
 - **Mobile Network Operators (MNOs)**: Expose network capabilities (QoD, Location, SIM Swap) to developers via Camara APIs
@@ -273,7 +273,7 @@ See `docs/compliance/example-jurisdiction/REGULATORY-COMPLIANCE.md` for template
 - **Multi-Market Operators**: Federated OPG deployment across multiple countries with local compliance
 - **Wholesale Network Providers**: B2B2X model exposing network APIs to service provider partners
 
-**MVP Scope** (following OPG.10):
+**MVP Scope** (following OPG.10 v3.0):
 - Developer portal and onboarding
 - OAuth2/OIDC authentication and authorization
 - API product catalog (Camara APIs)
@@ -384,14 +384,14 @@ See `docs/compliance/example-jurisdiction/BREACH-SIMULATION.md` for complete sce
 
 ## Integration Patterns
 
-### GSMA Open Gateway Integration (OPG.10 Compliant)
+### GSMA Open Gateway Integration (OPG.10 v3.0 Compliant)
 
-This reference framework implements **OPG.10 – Open Gateway Technical Realisation Guidelines** for deploying GSMA Open Gateway (Camara) platform using:
+This reference framework implements **OPG.10 – Open Gateway Technical Realisation Guidelines v3.0** for deploying GSMA Open Gateway (Camara) platform using:
 
 - **TM Forum ODA Canvas**: Framework for building federation layer components
 - **TMF931 Operate APIs**: Standardized interface to existing BSS systems
 
-**OPG.10 Alignment**: This architecture follows the official GSMA Open Gateway Platform deployment guidelines, combining modern API-first federation components with proven BSS infrastructure.
+**OPG.10 v3.0 Alignment**: This architecture follows the official GSMA Open Gateway Platform deployment guidelines (Version 3.0, October 2025), combining modern API-first federation components with proven BSS infrastructure.
 
 #### Architecture Overview
 
@@ -419,7 +419,7 @@ Developer                  Federation Layer              Existing BSS
 
 #### TMF931 Open Gateway Operate API (BSS Integration Layer)
 
-**Purpose**: Standardized interface to existing BSS for Open Gateway operations (as specified in OPG.10)
+**Purpose**: Standardized interface to existing BSS for Open Gateway operations (as specified in OPG.10 v3.0)
 
 **Key APIs**:
 - **Onboarding API**: Register developers, manage API products
@@ -435,7 +435,7 @@ Developer                  Federation Layer              Existing BSS
 
 #### ODA Canvas Components (OPG.10 Federation Layer)
 
-**Purpose**: New ODA-compliant components for federation and governance, built using [ODA Canvas framework](https://github.com/vpnetconsult/oda-canvas) following OPG.10 guidelines
+**Purpose**: New ODA-compliant components for federation and governance, built using [ODA Canvas framework](https://github.com/vpnetconsult/oda-canvas) following OPG.10 v3.0 guidelines
 
 **Key Components**:
 - **Developer Portal** (Engagement Domain): Self-service API registration
