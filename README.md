@@ -531,38 +531,47 @@ Developer                  Federation Layer              Existing BSS
 ### Architecture Overview
 
 ```
-Network Fault             Service Assurance              Existing BSS
-   │                       (ODA Canvas)                   (TMF932)
-   │                            │                            │
-   ├─> Alarm Detected ──────────┤                            │
-   │   (Network Element)        │                            │
-   │                            │                            │
-   │   AI Analysis ─────────────┤                            │
-   │   (TMFC043 Fault Mgmt)     │                            │
-   │                            │                            │
-   │   Service Problem ─────────┤                            │
-   │   (TMF656)                 │                            │
-   │                            │                            │
-   │                            ├──> TMF932 Assurance APIs ──┤
-   │                            │    (Fault, Problem, Ticket) │
-   │                            │                            │
-   │                            │                            ├──> BSS Systems
-   │                            │                            │    (Trouble Ticket, SLA)
-   │                            │                            │
-   │   <─── Auto-Remediation ───┤<─── AI Decision ───────────┤
-   │   (Level 4 Autonomy)       │                            │
+Network Fault                   ODA Canvas Components              TMF932 APIs → BSS
+   │                          (Production & Intelligence)              │
+   │                                    │                              │
+   ├─> Alarm Detected ─────────────────┤                              │
+   │   (Network Element)                │                              │
+   │                                    │                              │
+   ├─> TMFC043 Fault Management ───────┤                              │
+   │   (Alarm API, Service Problem API) │                              │
+   │                                    │                              │
+   ├─> TMFC053 Service Quality Mgmt ───┤                              │
+   │   (SLA Monitoring)                 │                              │
+   │                                    │                              │
+   ├─> TMFC038 Resource Perf Mgmt ─────┤                              │
+   │   (Intelligence Domain - KPIs)     │                              │
+   │                                    │                              │
+   │   AI Decision: Remediate ──────────┤──> TMF932 APIs ──────────────┤
+   │                                    │   (Fault, SLA, Performance)  │
+   │                                    │                              │
+   │                                    │                              ├─> BSS OSS
+   │                                    │                              │   (Tickets, SLA)
+   │                                    │                              │
+   ├─> TMFC011 Resource Order Mgmt ────┤<── Auto-Remediation ─────────┤
+   │   (Provision resources)            │    (Level 4 Autonomy)        │
+   │                                    │                              │
+   ├─> TMFC007 Service Order Mgmt ─────┤                              │
+   │   (Service reconfiguration)        │                              │
+   │                                    │                              │
+   │   <─── Service Restored ───────────┤                              │
 ```
 
 ### TMF932 Core APIs (BSS Integration Layer)
 
-**Purpose**: Standardized interface to existing BSS for autonomous service assurance operations
+**Purpose**: Standardized interface to existing BSS/OSS for autonomous service assurance operations
 
-**Key APIs**:
-- **TMFC043 - Fault Management**: AI-powered fault detection and diagnosis (network → service propagation)
-- **TMF656 - Service Problem Management**: Correlate faults into service problems, predict impact
-- **TMF621 - Trouble Ticket Management**: Automated ticket creation, routing, and resolution
-- **TMF623 - SLA Management**: Monitor SLAs, trigger automated remediation
-- **TMF628 - Performance Management**: Real-time KPI monitoring and anomaly detection
+**Key TMF Open APIs** (exposed via ODA Components):
+- **TMF642 - Alarm Management API**: Real-time alarm detection and correlation (via TMFC043)
+- **TMF656 - Service Problem Management API**: Service fault diagnosis and impact analysis (via TMFC043)
+- **TMF623 - SLA Management API**: Monitor SLAs, trigger automated remediation (via TMFC053)
+- **TMF628 - Performance Management API**: Real-time KPI monitoring and anomaly detection (via TMFC038)
+- **TMF652 - Resource Order Management API**: Automated resource provisioning for remediation (via TMFC011)
+- **TMF641 - Service Order Management API**: Service reconfiguration and restoration (via TMFC007)
 
 **Benefits**:
 - ✅ Level 4 Autonomy: AI anticipates and auto-remediates issues
@@ -570,69 +579,130 @@ Network Fault             Service Assurance              Existing BSS
 - ✅ Reduced MTTR (Mean Time To Resolution)
 - ✅ Proactive service quality management
 - ✅ Standardized interface across different OSS vendors
+- ✅ ODA-compliant components for cloud-native deployment
 
 ### ODA Canvas Components (Autonomous Assurance Layer)
 
-**Purpose**: New ODA-compliant components for autonomous service assurance, built using ODA Canvas framework
+**Purpose**: ODA-compliant components for autonomous service assurance, built using ODA Canvas framework
 
-**Key Components**:
-- **TMFC043 - Fault Management** (Production Domain): AI-powered fault correlation and root cause analysis
-- **Service Problem Management** (Production Domain): Predictive problem detection using ML
-- **Trouble Ticket Automation** (Engagement Domain): Intelligent ticket routing to NOC/call center
-- **Performance Analytics** (Intelligence Domain): Real-time KPI monitoring, anomaly detection
-- **Intent-based Operations** (Intelligence Domain): Translate business intent to network actions
+#### Production Domain Components
 
-**ODA Canvas Compliance**:
+**[TMFC043 - Fault Management](https://www.tmforum.org/resources/component/tmfc043-fault-management-v1-0-0/)**
+- **Exposed APIs**: TMF642 Alarm Management API, TMF656 Service Problem Management API
+- **Function**: AI-powered alarm correlation, root cause analysis, service fault diagnosis
+- **Autonomy**: Detects network faults, correlates to service impact, creates service problems
+- **Example**: RAN congestion alarm → correlate with QoD service degradation → create service problem
+
+**TMFC053 - Service Quality Management**
+- **Exposed APIs**: TMF623 SLA Management API
+- **Function**: Monitor service-level SLAs in real-time, detect violations, trigger remediation
+- **Autonomy**: Predicts SLA breaches before they occur, initiates preventive actions
+- **Example**: QoD latency approaching SLA threshold → trigger bandwidth reallocation
+
+**TMFC011 - Resource Order Management**
+- **Exposed APIs**: TMF652 Resource Order Management API
+- **Function**: Automated resource provisioning and deprovisioning for remediation
+- **Autonomy**: AI-initiated resource orders to resolve faults (Level 4)
+- **Example**: Service problem identified → auto-create resource order to add capacity
+
+**TMFC007 - Service Order Management**
+- **Exposed APIs**: TMF641 Service Order Management API
+- **Function**: Service reconfiguration, parameter adjustment, service restoration
+- **Autonomy**: AI-driven service modifications to restore quality
+- **Example**: Reroute traffic to alternate path to restore QoD service
+
+#### Intelligence Domain Components
+
+**TMFC038 - Resource Performance Management**
+- **Exposed APIs**: TMF628 Performance Management API
+- **Function**: Real-time KPI collection, anomaly detection using ML, predictive analytics
+- **Autonomy**: Detects performance degradation before alarms, predicts failures
+- **Example**: Detect gradual throughput decline → predict imminent congestion → proactive remediation
+
+#### ODA Canvas Compliance
 - Follow [ODA Component specification](https://github.com/vpnetconsult/oda-canvas)
-- Event-driven architecture for real-time fault propagation
-- AI/ML models deployed as microservices
+- Event-driven architecture for real-time fault propagation via TMF688 Event Management API
+- AI/ML models deployed as microservices within components
 - Automated lifecycle management via Kubernetes operators
+- Declarative component manifests with exposed APIs, dependencies, and security policies
 
 ### Autonomous Assurance Flow
 
-1. **Fault Detection** (TMFC043 via TMF932)
-   - Network element generates alarm
-   - AI correlates alarms across network
-   - Root cause analysis identifies source
-   - Severity classification (critical, major, minor)
+#### 1. **Performance Monitoring & Anomaly Detection** (TMFC038 - Intelligence Domain)
+   - **Component**: Resource Performance Management
+   - **API**: TMF628 Performance Management API
+   - **Action**: Continuous KPI collection (throughput, latency, packet loss, jitter)
+   - **AI/ML**: Detect anomalies using ML models, predict degradation trends
+   - **Output**: Performance threshold violations, predictive alerts
 
-2. **Service Impact Analysis** (TMF656 via TMF932)
-   - Map network faults to affected services
-   - Predict customer/SLA impact
-   - Create service problem record in BSS
-   - Prioritize based on business impact
+#### 2. **Fault Detection & Correlation** (TMFC043 - Production Domain)
+   - **Component**: Fault Management
+   - **APIs**: TMF642 Alarm Management API, TMF656 Service Problem Management API
+   - **Action**: Network element generates alarm → AI correlates alarms across network
+   - **AI/ML**: Root cause analysis, alarm deduplication, fault propagation modeling
+   - **Output**: Service problem record identifying affected services and customers
 
-3. **Automated Ticket Creation** (TMF621 via TMF932)
-   - AI decides: auto-remediate or escalate
-   - Generate trouble ticket if human intervention needed
-   - Route to appropriate team (NOC, field ops)
-   - Track resolution SLAs
+#### 3. **SLA Compliance Monitoring** (TMFC053 - Production Domain)
+   - **Component**: Service Quality Management
+   - **API**: TMF623 SLA Management API
+   - **Action**: Monitor QoD SLA (latency < 20ms, throughput > 100Mbps)
+   - **AI/ML**: Predict SLA breach probability based on current trends
+   - **Output**: SLA violation alert or predictive warning
 
-4. **AI-Driven Remediation** (Level 4 Autonomy)
-   - AI analyzes historical patterns
-   - Predicts optimal remediation action
-   - Executes network reconfiguration automatically
-   - Monitors outcome and learns
+#### 4. **AI Decision: Auto-Remediate or Escalate** (Level 4 Autonomy)
+   - **Logic**: If fault pattern matches known remediation → auto-remediate
+   - **Logic**: If novel/high-risk fault → escalate to NOC (create trouble ticket via BSS)
+   - **Historical Learning**: AI references past incidents and resolution outcomes
 
-5. **Continuous Optimization** (Intelligence Domain)
-   - Real-time performance monitoring
-   - Detect degradation before failure
-   - Adjust resources proactively
-   - Update ML models with learnings
+#### 5. **Automated Resource Provisioning** (TMFC011 - Production Domain)
+   - **Component**: Resource Order Management
+   - **API**: TMF652 Resource Order Management API
+   - **Action**: AI creates resource order to add bandwidth, compute, or network capacity
+   - **Example**: Congestion detected → auto-order additional bandwidth allocation
+   - **Output**: Resource order submitted to existing BSS for provisioning
+
+#### 6. **Service Reconfiguration** (TMFC007 - Production Domain)
+   - **Component**: Service Order Management
+   - **API**: TMF641 Service Order Management API
+   - **Action**: AI modifies service parameters or reroutes traffic
+   - **Example**: Reroute QoD traffic to alternate path with lower latency
+   - **Output**: Service order executed, configuration updated
+
+#### 7. **Validation & Continuous Learning** (TMFC038 - Intelligence Domain)
+   - **Action**: Monitor post-remediation KPIs to confirm issue resolved
+   - **AI/ML**: Update ML models with new remediation outcome
+   - **Feedback Loop**: If remediation failed → escalate, if succeeded → reinforce AI decision
 
 ### Level 4 Autonomy Capabilities
 
-**Real-time Monitoring, Analysis, Optimization**:
-- Network continuously monitors KPIs
-- AI detects anomalies before they become faults
-- Automatic resource reallocation (e.g., throughput management)
-- Self-healing networks
+**Real-time Monitoring, Analysis, Optimization** (powered by ODA Components):
+- **TMFC038**: Continuous KPI monitoring across all network resources
+- **TMFC043**: AI detects anomalies before they escalate to service-impacting faults
+- **TMFC011 + TMFC007**: Automatic resource/service reallocation (e.g., throughput management)
+- **End-to-end**: Self-healing networks without human intervention
 
-**Mission-Critical Use Cases** (validated by DNB):
-- **Public Safety**: Guaranteed connectivity for emergency services
-- **Healthcare**: Reliable telemedicine, remote surgery
-- **Smart Cities**: Traffic management, utilities monitoring
-- **Autonomous Transportation**: V2X communication, fleet management
+**Component Integration for Level 4**:
+```
+TMFC038 (Intelligence) → Detect anomaly
+    ↓
+TMFC043 (Production) → Correlate to potential service problem
+    ↓
+TMFC053 (Production) → Check SLA impact
+    ↓
+AI Decision Engine → Auto-remediate
+    ↓
+TMFC011 (Production) → Provision resources
+    ↓
+TMFC007 (Production) → Reconfigure service
+    ↓
+TMFC038 (Intelligence) → Validate resolution
+```
+
+**Mission-Critical Use Cases** (validated by DNB with Ericsson):
+- **Public Safety**: Guaranteed connectivity for emergency services via auto-QoS adjustment
+- **Healthcare**: Reliable telemedicine, remote surgery with latency-sensitive SLA enforcement
+- **Smart Cities**: Traffic management, utilities monitoring with predictive fault prevention
+- **Autonomous Transportation**: V2X communication, fleet management with self-healing network paths
 
 ### Integration with TMF931 (Operate)
 
@@ -640,27 +710,52 @@ Network Fault             Service Assurance              Existing BSS
 
 | Aspect | TMF931 (Operate) | TMF932 (Assure) |
 |--------|-----------------|----------------|
-| **Purpose** | Developer onboarding, API exposure | Service quality, fault resolution |
+| **Purpose** | Developer onboarding, API exposure | Service quality, autonomous fault resolution |
 | **Domain** | Open Gateway (NEF/CAMARA) | Service Assurance (OSS) |
-| **Key APIs** | Onboarding, Ordering, Catalog | Fault Mgmt, Problem Mgmt, Trouble Ticket |
-| **User** | External developers | Network operations, AI agents |
+| **Key APIs** | Onboarding, Ordering, Product Catalog | TMF642 Alarm, TMF656 Problem, TMF623 SLA, TMF628 Performance, TMF652/641 Order |
+| **ODA Components** | TMFC035 (Party - Permissions) | TMFC043, TMFC053, TMFC011, TMFC007 (Production)<br>TMFC038 (Intelligence) |
+| **User** | External developers | Network AI agents, NOC (fallback) |
 | **Autonomy** | Human-driven (Level 0-2) | AI-driven (Level 4) |
-| **Example** | Developer subscribes to QoD API | Network auto-adjusts bandwidth to maintain QoD SLA |
+| **Example** | Developer subscribes to QoD API | AI auto-adjusts bandwidth to maintain QoD SLA |
+| **Integration Point** | BSS Billing, Product Catalog | BSS/OSS Fault Management, Provisioning |
 
-**Combined Flow**:
+**Combined Flow Example: TMF931 + TMF932 for QoD Service**:
 ```
-Developer requests QoD API (TMF931)
-    ↓
-Network allocates bandwidth resources
-    ↓
-TMF932 monitors QoD SLA compliance
-    ↓
-Fault detected: congestion affecting QoD
-    ↓
-Level 4 AI auto-remediates: reallocate bandwidth
-    ↓
-QoD SLA maintained, developer unaffected
+1. Developer subscribes to QoD API (TMF931)
+   - TMFC035 (Party) provisions OAuth2 credentials
+   - BSS creates product subscription, billing record
+   - QoD SLA: latency < 20ms, throughput > 100Mbps
+
+2. Network allocates bandwidth resources
+   - TMFC011 (Resource Order) provisions 5G QoS flow
+   - Network configures guaranteed bit rate (GBR)
+
+3. TMFC038 (Intelligence) monitors QoD performance
+   - Collects latency, throughput KPIs every 30 seconds
+   - Detects anomaly: latency trending upward (15ms → 18ms → 21ms)
+
+4. TMFC043 (Production) detects alarm
+   - RAN congestion alarm triggered
+   - AI correlates: QoD service degradation imminent
+
+5. TMFC053 (Production) checks SLA impact
+   - QoD SLA breach predicted in 2 minutes
+   - Critical service: auto-remediate immediately
+
+6. Level 4 AI Decision: Auto-remediate
+   - TMFC011 (Production): Create resource order for additional bandwidth
+   - TMFC007 (Production): Reroute some QoD traffic to alternate path
+
+7. TMFC038 (Intelligence) validates resolution
+   - Latency restored to 12ms, throughput stable at 110Mbps
+   - QoD SLA maintained, developer unaffected, no API downtime
+
+8. AI Learning
+   - Store incident pattern for future predictions
+   - Update ML model: RAN congestion + QoD → reallocate bandwidth
 ```
+
+**Key Insight**: TMF931 enables developer API consumption, TMF932 ensures SLA compliance autonomously.
 
 ### Multi-Tenant Deployments
 
